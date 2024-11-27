@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Departamento;
 use App\Models\Empleado;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,8 @@ class EmpleadoController extends Controller
      */
     public function create()
     {
-        //
+        $departamentos = Departamento::all(); //para obtener todos los departamentos para que se ve despues en el desplegable
+        return view('empleados.create', compact('departamentos'));
     }
 
     /**
@@ -30,7 +32,15 @@ class EmpleadoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'numero' => 'required|max:3|unique:empleados,numero',
+            'nombre' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+            'departamento_id' => 'required|exists:departamentos,id',
+        ]);
+        $empleado = Empleado::create($validated);
+        session()->flash('exito', 'Empleado creado correctamente.');
+        return redirect()->route('empleados.index', $empleado);
     }
 
     /**
@@ -62,6 +72,6 @@ class EmpleadoController extends Controller
      */
     public function destroy(Empleado $empleado)
     {
-        //
-    }
+        $empleado->delete();
+        return redirect()->route('empleados.index');    }
 }

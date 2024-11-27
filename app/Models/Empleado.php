@@ -10,6 +10,8 @@ class Empleado extends Model
     /** @use HasFactory<\Database\Factories\EmpleadoFactory> */
     use HasFactory;
 
+    protected $fillable = ['numero', 'nombre', 'apellidos', 'departamento_id'];
+
     public function departamento()
     {
         return $this->belongsTo(Departamento::class);
