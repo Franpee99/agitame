@@ -26,7 +26,9 @@ class EmpleadoController extends Controller
     public function create()
     {
         $departamentos = Departamento::all(); //para obtener todos los departamentos para que se ve despues en el desplegable
-        return view('empleados.create', compact('departamentos'));
+        return view('empleados.create', [
+            'departamentos' => $departamentos, //para el despegable
+        ]);
     }
 
     /**
