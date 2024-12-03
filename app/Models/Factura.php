@@ -11,7 +11,8 @@ class Factura extends Model
     use HasFactory;
 
     public function articulos(){
-        return $this->belongsToMany(Articulo::class);
+        return $this->belongsToMany(Articulo::class)
+                    ->withPivot('cantidad');
     }
 
     public function user(){
