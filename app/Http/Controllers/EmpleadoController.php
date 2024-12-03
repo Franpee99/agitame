@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Departamento;
 use App\Models\Empleado;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-
 
 class EmpleadoController extends Controller
 {
@@ -16,7 +13,7 @@ class EmpleadoController extends Controller
     public function index()
     {
         return view('empleados.index', [
-            'empleados' => Empleado::with('departamento')->orderBy('numero')->get(),
+            'empleados' => Empleado::with('departamento')->get(),
         ]);
     }
 
@@ -25,10 +22,7 @@ class EmpleadoController extends Controller
      */
     public function create()
     {
-        $departamentos = Departamento::all(); //para obtener todos los departamentos para que se ve despues en el desplegable
-        return view('empleados.create', [
-            'departamentos' => $departamentos, //para el despegable
-        ]);
+        //
     }
 
     /**
@@ -36,15 +30,7 @@ class EmpleadoController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'numero' => 'required|max:3|unique:empleados,numero',
-            'nombre' => 'required|string|max:255',
-            'apellidos' => 'required|string|max:255',
-            'departamento_id' => 'required|exists:departamentos,id',
-        ]);
-        $empleado = Empleado::create($validated);
-        session()->flash('exito', 'Empleado creado correctamente.');
-        return redirect()->route('empleados.index', $empleado);
+        //
     }
 
     /**
@@ -60,11 +46,7 @@ class EmpleadoController extends Controller
      */
     public function edit(Empleado $empleado)
     {
-        $departamentos = Departamento::all(); //para obtener todos los departamentos para que se ve despues en el desplegable
-        return view('empleados.edit', [
-            'empleado' => $empleado,
-            'departamentos' => $departamentos, //Para el desplegable
-        ]);
+        //
     }
 
     /**
@@ -72,20 +54,7 @@ class EmpleadoController extends Controller
      */
     public function update(Request $request, Empleado $empleado)
     {
-        $validated = $request->validate([
-            'numero' => [
-                'required',
-                'max:2',
-                Rule::unique('empleados')->ignore($empleado),
-            ],
-            'nombre' => 'required|string|max:255',
-            'apellidos' => 'required|string|max:255',
-            'departamento_id' => 'required|exists:departamentos,id',
-        ]);
-        $empleado->fill($validated);
-        $empleado->save();
-        session()->flash('exito', 'Empleado modificado correctamente.');
-        return redirect()->route('empleados.index');
+        //
     }
 
     /**
@@ -93,6 +62,6 @@ class EmpleadoController extends Controller
      */
     public function destroy(Empleado $empleado)
     {
-        $empleado->delete();
-        return redirect()->route('empleados.index');    }
+        //
+    }
 }

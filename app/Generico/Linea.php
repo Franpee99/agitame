@@ -25,12 +25,13 @@ class Linea
         return $this->cantidad;
     }
 
-    public function incrCantidad(){
-        return $this->cantidad++;
+    public function incrCantidad()
+    {
+        $this->cantidad++;
     }
 
-    public function decrCantidad(){
-        return $this->cantidad--;
+    public function decrCantidad()
+    {
+        $this->cantidad--;
     }
-
 }

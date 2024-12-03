@@ -10,13 +10,14 @@ class Articulo extends Model
     /** @use HasFactory<\Database\Factories\ArticuloFactory> */
     use HasFactory;
 
-    public function departamentos(){
+    public function departamentos()
+    {
         return $this->belongsToMany(Departamento::class);
     }
 
-    public function facturas(){
+    public function facturas()
+    {
         return $this->belongsToMany(Factura::class)
-                    ->withPivot('cantidad');
+            ->withPivot('cantidad');
     }
-
 }

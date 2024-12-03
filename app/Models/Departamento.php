@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Departamento extends Model
 {
@@ -18,7 +17,8 @@ class Departamento extends Model
         return $this->hasMany(Empleado::class);
     }
 
-    public function articulos(){
-        return $this->BelongsToMany(Articulo::class);
+    public function articulos()
+    {
+        return $this->belongsToMany(Articulo::class);
     }
 }

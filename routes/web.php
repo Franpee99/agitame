@@ -41,7 +41,7 @@ Route::resource('departamentos', DepartamentoController::class);
 Route::resource('empleados', EmpleadoController::class);
 Route::resource('articulos', ArticuloController::class);
 
-Route::get('/carrito/meter/{articulo}', function (Articulo $articulo){
+Route::get('/carrito/meter/{articulo}', function (Articulo $articulo) {
     $carrito = Carrito::carrito();
     $carrito->meter($articulo->id);
     session()->put('carrito', $carrito);
@@ -54,7 +54,6 @@ Route::get('/carrito/sacar/{articulo}', function (Articulo $articulo) {
     session()->put('carrito', $carrito);
     return redirect()->route('articulos.index');
 })->name('carrito.sacar');
-
 
 Route::get('/carrito/vaciar', function () {
     session()->forget('carrito');
@@ -78,7 +77,5 @@ Route::post('/comprar', function () {
     session()->forget('carrito');
     return redirect()->route('articulos.index');
 })->middleware('auth')->name('comprar');
-
-
 
 require __DIR__.'/auth.php';
