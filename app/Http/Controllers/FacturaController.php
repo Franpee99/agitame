@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Articulo;
 use App\Models\Factura;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,9 @@ class FacturaController extends Controller
      */
     public function index()
     {
-        //
+        return view('facturas.index',[
+            'facturas' => Factura::all(),
+        ]);
     }
 
     /**
@@ -36,7 +39,12 @@ class FacturaController extends Controller
      */
     public function show(Factura $factura)
     {
-        //
+        $cantidadTotal = 0;
+        foreach ($factura->articulos as $articulo){
+            $cantidadTotal += $articulo->precio * $articulo->pivot->cantidad;
+        }
+
+        return view('facturas.show', compact('factura', 'cantidadTotal'));
     }
 
     /**
@@ -60,6 +68,7 @@ class FacturaController extends Controller
      */
     public function destroy(Factura $factura)
     {
-        //
+        $factura->delete();
+        return redirect()->route('facturas.index');
     }
 }

@@ -4,11 +4,14 @@ use App\Generico\Carrito;
 use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Articulo;
 use App\Models\Factura;
+use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -40,6 +43,8 @@ Route::middleware('auth')->group(function () {
 Route::resource('departamentos', DepartamentoController::class);
 Route::resource('empleados', EmpleadoController::class);
 Route::resource('articulos', ArticuloController::class);
+Route::resource('facturas', FacturaController::class);
+
 
 Route::get('/carrito/meter/{articulo}', function (Articulo $articulo) {
     $carrito = Carrito::carrito();
@@ -60,11 +65,12 @@ Route::get('/carrito/vaciar', function () {
     return redirect()->route('articulos.index');
 })->name('carrito.vaciar');
 
-Route::post('/comprar', function () {
-    $carrito = Carrito::carrito();
+Route::post('/comprar', function (Request $request) {
     DB::beginTransaction();
+    $carrito = Carrito::carrito();
+    $numeroFactura = $request->input('numero_factura');
     $factura = new Factura();
-    $factura->numero = 100;
+    $factura->numero = $numeroFactura;
     $factura->user()->associate(Auth::user());
     $factura->save();
     // die();
@@ -75,7 +81,11 @@ Route::post('/comprar', function () {
     $factura->articulos()->attach($attachs);
     DB::commit();
     session()->forget('carrito');
-    return redirect()->route('articulos.index');
+    return redirect()->route('facturas.index');
 })->middleware('auth')->name('comprar');
 
 require __DIR__.'/auth.php';
+
+Route::post('/comprar/numero_fatura', function(){
+    return view('comprar.numero_factura'); //retorna a la vista de la carpeta 'comprar' -> numero_factura.blade.php
+})->name('generar.numero_factura');

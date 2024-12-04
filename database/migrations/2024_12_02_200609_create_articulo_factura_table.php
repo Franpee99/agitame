@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('articulo_factura', function (Blueprint $table) {
             $table->foreignId('articulo_id')->constrained();
-            $table->foreignId('factura_id')->constrained();
+            $table->foreignId('factura_id')->constrained()->onDelete('cascade'); //Para que se pueda llegar a eliminar una factura
             $table->integer('cantidad')->default(1);
             $table->primary(['articulo_id', 'factura_id']);
         });
