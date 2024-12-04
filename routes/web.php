@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -65,12 +67,11 @@ Route::get('/carrito/vaciar', function () {
     return redirect()->route('articulos.index');
 })->name('carrito.vaciar');
 
-Route::post('/comprar', function (Request $request) {
+Route::post('/comprar', function () {
     DB::beginTransaction();
     $carrito = Carrito::carrito();
-    $numeroFactura = $request->input('numero_factura');
     $factura = new Factura();
-    $factura->numero = $numeroFactura;
+    $factura->numero = Str::uuid(); //genera un uuid aleatorio
     $factura->user()->associate(Auth::user());
     $factura->save();
     // die();
@@ -86,6 +87,8 @@ Route::post('/comprar', function (Request $request) {
 
 require __DIR__.'/auth.php';
 
+/*
 Route::post('/comprar/numero_fatura', function(){
     return view('comprar.numero_factura'); //retorna a la vista de la carpeta 'comprar' -> numero_factura.blade.php
 })->name('generar.numero_factura');
+*/
