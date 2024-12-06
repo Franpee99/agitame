@@ -1,0 +1,71 @@
+Creamos la carpeta donde vamos a iniciar el proyecto
+
+composer create-project laravel/laravel (nombre del proyecto)
+
+Dentro ya del proyecto:
+composer install
+npm install
+composer require laravel/breeze --dev
+php artisan breeze:install
+npm install -D flowbite
+
+Crear usuario y BD:
+sudo -u postgres createuser -P tienda
+sudo -u postgres createdb -O tienda tienda
+psql -h localhost -U tienda -d tienda
+
+En .env modificar los datos de la BD:
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=tienda
+DB_USERNAME=tienda
+DB_PASSWORD=1234
+
+Crear las migraciones:
+php artisan make:model -cmrfs (Nombre del modelo, en SINGULAR y primera letra Mayúscula)
+php artisan migrate (para aplicar las migraciones)
+
+Editar las tablas
+Cuando se termine de editar hacer un fresh para que se actualice a la BD
+
+Meter los datos en la BD (php artisan db)
+ej: 	insert into articulos (codigo, descripcion, precio)
+	values(1, 'Tornillo', 2.5),
+		(2, 'Martillo', 9);
+
+Nos creamos la capeta del modelo en resources -> views (nombre de la carpeta en plural)
+
+Creamos en dicha carpeta el archivo index.blade.php
+Añadimos lo que vayamos a poner (copia y pega de otro proyecto)
+
+Añadir la ruta a web.php
+
+En el controlador de dicho modelo, en la funcion index() añadimos el retorno de la vista (mirar en otros proyectos)
+
+Configura flowbite para que se vea:
+en tailwind.config.js añadir: 
+				plugins: [
+					forms,
+					require('flowbite/plugin')
+				    ],
+en app.js añadir: 
+			import 'flowbite';
+
+
+Cuando se hace la creacion de algo (articulos ej) hay que acordarse que al final del todo (una vez validado(store), creado(create) y creado el archivo create.blade.php) pone lo de $fillable en articulos.php
+
+Cuando tenemos UNA RELACION MUCHOS MUCHOS:
+crear tabla pivote:
+			php artisan make:migration create_articulo_factura_table
+			php artisan migrate
+establecer las claves foraneas en la migracion
+Despues poner en los modelos de cada tabla(Articulo.php - Departamento.php), una funcion que relacione con la tabla pivote (también poner en cada modelo la relacion del otro -> Articulo.php -> function facturas()... (poner la relacion del contrario))
+
+
+ANEXO:
+	Para que salgan los mensajes de articulo creado.. al crearlo hay que añadir de otro proyecto parte de el archivo app.blade.php.
+	
+	Para el que no de fallo en el logeo, por no iniciar sesion, copiar y pegar el archivo navigation.blade.php y adaptarlo tu proyecto claro.
+
+
